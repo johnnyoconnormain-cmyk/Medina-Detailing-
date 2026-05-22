@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b2545" />
+  <title>Medina Detailing — Marine Detailing</title>
+  <meta name="description" content="Hand-detailing for boat owners who want their vessel cared for properly. By appointment." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0b2545;
+      --white: #ffffff;
+      --rule-on-navy: rgba(255, 255, 255, 0.18);
+      --rule-on-white: rgba(11, 37, 69, 0.14);
+      --muted-on-navy: rgba(255, 255, 255, 0.72);
+      --muted-on-white: rgba(11, 37, 69, 0.7);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--navy);
+      background: var(--white);
+      line-height: 1.6;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+    }
+
+    /* ---------- Top bar ---------- */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: var(--navy);
+      color: var(--white);
+      border-bottom: 1px solid var(--rule-on-navy);
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .brand {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: clamp(1rem, 3vw, 2.5rem);
+    }
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8125rem;
+      letter-spacing: 0.06em;
+      opacity: 0.72;
+      transition: opacity 0.2s ease;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    /* ---------- Type ---------- */
+    .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 500;
+      opacity: 0.7;
+      margin-bottom: 1.5rem;
+    }
+    .display {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      font-variation-settings: 'opsz' 144;
+    }
+    .section-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(2.25rem, 5vw, 3.75rem);
+      line-height: 1;
+      letter-spacing: -0.015em;
+    }
+
+    /* ---------- Hero / About ---------- */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 10rem 0 6rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: end;
+    }
+    @media (min-width: 900px) {
+      .hero-grid { grid-template-columns: 1.5fr 1fr; gap: 6rem; }
+    }
+    .lede {
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--muted-on-navy);
+      max-width: 34ch;
+    }
+    .meta {
+      margin-top: 1.5rem;
+      font-size: 0.8125rem;
+      letter-spacing: 0.06em;
+      opacity: 0.6;
+    }
+
+    /* ---------- Sections ---------- */
+    section { padding: clamp(5rem, 10vw, 8rem) 0; }
+    .section-head {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+    @media (min-width: 900px) {
+      .section-head {
+        grid-template-columns: 1fr 2fr;
+        gap: 4rem;
+        align-items: end;
+      }
+    }
+
+    /* ---------- Detailing ---------- */
+    .services { background: var(--white); color: var(--navy); }
+    .service-list { list-style: none; border-top: 1px solid var(--rule-on-white); }
+    .service-list li {
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      gap: 1.5rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--rule-on-white);
+      align-items: start;
+    }
+    @media (min-width: 700px) {
+      .service-list li { grid-template-columns: 4rem 1fr; gap: 3rem; }
+    }
+    .service-num {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      opacity: 0.45;
+      padding-top: 0.5rem;
+    }
+    .service-body h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(1.375rem, 2.5vw, 1.625rem);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+    .service-body p {
+      color: var(--muted-on-white);
+      max-width: 62ch;
+    }
+
+    /* ---------- Concierge ---------- */
+    .concierge {
+      background: var(--navy);
+      color: var(--white);
+    }
+    .plan-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-top: 1px solid var(--rule-on-navy);
+    }
+    @media (min-width: 760px) {
+      .plan-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .plan {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--rule-on-navy);
+    }
+    @media (min-width: 760px) {
+      .plan {
+        padding: 2.75rem 2rem 2.75rem 0;
+        border-right: 1px solid var(--rule-on-navy);
+        border-bottom: none;
+      }
+      .plan:last-child { border-right: none; padding-right: 0; }
+      .plan + .plan { padding-left: 2rem; }
+    }
+    .plan-cadence {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 1rem;
+    }
+    .plan-name {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .plan p {
+      color: var(--muted-on-navy);
+      font-size: 0.9375rem;
+    }
+
+    /* ---------- Contact ---------- */
+    .contact { background: var(--white); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      border-top: 1px solid var(--rule-on-white);
+      padding-top: 3rem;
+    }
+    @media (min-width: 700px) {
+      .contact-grid { grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+    }
+    .contact-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 0.75rem;
+    }
+    .contact-value {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+    .contact-value a {
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-on-white);
+      transition: border-color 0.2s ease;
+    }
+    .contact-value a:hover { border-color: var(--navy); }
+
+    /* ---------- Footer ---------- */
+    footer {
+      background: var(--navy);
+      color: var(--white);
+      padding: 2.5rem 0;
+    }
+    .foot-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8125rem;
+      opacity: 0.55;
+      gap: 1rem;
+    }
+    @media (max-width: 600px) {
+      .foot-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ---------- Small screens ---------- */
+    @media (max-width: 520px) {
+      .brand { font-size: 0.8125rem; letter-spacing: 0.12em; }
+      .nav-links { gap: 0.875rem; }
+      .nav-links a { font-size: 0.75rem; letter-spacing: 0.04em; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topbar">
+    <div class="container topbar-inner">
+      <a href="#about" class="brand">MEDINA DETAILING</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#detailing">Detailing</a></li>
+        <li><a href="#concierge">Concierge</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header id="about" class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Hand-detailing for boats</p>
+          <h1 class="display">A cleaner boat,<br>by hand.</h1>
+        </div>
+        <div>
+          <p class="eyebrow">About</p>
+          <p class="lede">
+            Medina Detailing is a one-man operation built on a simple idea —
+            your boat should look the way it did the day you bought it.
+            Every job is done by hand, on your dock, with no shortcuts.
+          </p>
+          <p class="meta">Booking now for the summer season.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="detailing" class="services">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">— Detailing</p>
+        <h2 class="section-title">What's included.</h2>
+      </div>
+      <ol class="service-list">
+        <li>
+          <span class="service-num">01</span>
+          <div class="service-body">
+            <h3>Exterior Wash &amp; Wax</h3>
+            <p>Full deck and hull rinse, hand wash with marine soap, hand-applied carnauba wax, and a microfiber dry-down. Chrome and stainless brought back to mirror.</p>
+          </div>
+        </li>
+        <li>
+          <span class="service-num">02</span>
+          <div class="service-body">
+            <h3>Interior Detail</h3>
+            <p>Vacuum, scrub, and condition every surface in the cabin and cockpit — vinyl, upholstery, teak, glass, and gelcoat. The boat smells new when it's done.</p>
+          </div>
+        </li>
+        <li>
+          <span class="service-num">03</span>
+          <div class="service-body">
+            <h3>Hull &amp; Waterline</h3>
+            <p>Targeted treatment for scum lines, oxidation, and stain build-up at and below the waterline. Restores the original finish without aggressive compounds.</p>
+          </div>
+        </li>
+        <li>
+          <span class="service-num">04</span>
+          <div class="service-body">
+            <h3>Polish &amp; Ceramic Protection</h3>
+            <p>Machine polish to remove oxidation and light scratches, followed by a marine-grade ceramic coating for long-term gloss and UV protection.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="concierge" class="concierge">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">— Concierge</p>
+        <h2 class="section-title">Recurring care.</h2>
+      </div>
+      <div class="plan-grid">
+        <div class="plan">
+          <p class="plan-cadence">Weekly</p>
+          <h3 class="plan-name">Slip-side Wash</h3>
+          <p>Every week, your boat gets a full wash and wipe-down. Show up to a clean boat, every weekend, all summer.</p>
+        </div>
+        <div class="plan">
+          <p class="plan-cadence">Bi-weekly</p>
+          <h3 class="plan-name">Maintenance</h3>
+          <p>Wash plus interior touch-up, glass, and a quick polish to keep things sharp without the cost of a weekly visit.</p>
+        </div>
+        <div class="plan">
+          <p class="plan-cadence">Monthly</p>
+          <h3 class="plan-name">Full Detail</h3>
+          <p>Once-a-month deep detail covering exterior, interior, hull, and protection — the boat reset every four weeks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">— Contact</p>
+        <h2 class="section-title">Get a quote.</h2>
+      </div>
+      <div class="contact-grid">
+        <div>
+          <p class="contact-label">Phone</p>
+          <p class="contact-value"><a href="tel:+10000000000">(000) 000-0000</a></p>
+        </div>
+        <div>
+          <p class="contact-label">Email</p>
+          <p class="contact-value"><a href="mailto:hello@medinadetailing.com">hello@medinadetailing.com</a></p>
+        </div>
+        <div>
+          <p class="contact-label">Service Area</p>
+          <p class="contact-value">Local marinas<br>&amp; private docks</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot-inner">
+      <p>&copy; 2026 Medina Detailing</p>
+      <p>Booking by appointment.</p>
+    </div>
+  </footer>
+</body>
+</html>
