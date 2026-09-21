@@ -122,8 +122,13 @@ own site before you drive.
 ---
 
 This repository previously held a single-page site for Medina Detailing. That
-version is preserved at the `detailing-site-v1` tag:
+version is untouched on `main` (commit `d5ab330`) — this rewrite lives only on
+its own branch, so nothing was destroyed:
 
 ```bash
-git checkout detailing-site-v1
+git checkout main          # the detailing site, including gallery/
+git checkout d5ab330       # or pin the exact commit
 ```
+
+Merging this branch is what would replace it, so if the detailing site is still
+live anywhere, tag it before you merge.
