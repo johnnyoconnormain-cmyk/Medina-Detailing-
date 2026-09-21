@@ -1,515 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#071a35" />
-  <title>Medina Detailing — Marine Detailing</title>
-  <meta name="description" content="Hand-detailing for boat owners who want their vessel cared for properly. By appointment." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --navy: #071a35;
-      --white: #ffffff;
-      --rule-on-navy: rgba(255, 255, 255, 0.18);
-      --rule-on-white: rgba(7, 26, 53, 0.14);
-      --muted-on-navy: rgba(255, 255, 255, 0.72);
-      --muted-on-white: rgba(7, 26, 53, 0.7);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: var(--navy);
-      background: var(--white);
-      line-height: 1.6;
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-    a { color: inherit; }
-
-    .container {
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-    }
-
-    /* ---------- Top bar ---------- */
-    .topbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 50;
-      background: var(--navy);
-      color: var(--white);
-      border-bottom: 1px solid var(--rule-on-navy);
-    }
-    .topbar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-    .brand {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 500;
-      font-size: 1rem;
-      letter-spacing: 0.18em;
-      color: var(--white);
-      text-decoration: none;
-    }
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: clamp(1rem, 3vw, 2.5rem);
-    }
-    .nav-links a {
-      color: var(--white);
-      text-decoration: none;
-      font-size: 0.8125rem;
-      letter-spacing: 0.06em;
-      opacity: 0.72;
-      transition: opacity 0.2s ease;
-    }
-    .nav-links a:hover { opacity: 1; }
-
-    /* ---------- Type ---------- */
-    .eyebrow {
-      font-size: 0.75rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      font-weight: 500;
-      opacity: 0.7;
-      margin-bottom: 1.5rem;
-    }
-    .display {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 300;
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      line-height: 0.98;
-      letter-spacing: -0.02em;
-      font-variation-settings: 'opsz' 144;
-    }
-    .section-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 300;
-      font-size: clamp(2.25rem, 5vw, 3.75rem);
-      line-height: 1;
-      letter-spacing: -0.015em;
-    }
-
-    /* ---------- Hero / About ---------- */
-    .hero {
-      background: var(--navy);
-      color: var(--white);
-      padding: 10rem 0 6rem;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-    }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 3rem;
-      align-items: end;
-    }
-    @media (min-width: 900px) {
-      .hero-grid { grid-template-columns: 1.5fr 1fr; gap: 4rem; }
-    }
-    @media (min-width: 1100px) {
-      .hero-grid { grid-template-columns: 1.4fr 1fr 0.9fr; gap: 4.5rem; }
-    }
-    .hero-photo {
-      display: none;
-    }
-    @media (min-width: 1100px) {
-      .hero-photo {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-      }
-      .hero-photo img {
-        width: 100%;
-        max-width: 360px;
-        height: auto;
-        display: block;
-      }
-    }
-    .lede {
-      font-size: 1.0625rem;
-      line-height: 1.65;
-      color: var(--muted-on-navy);
-      max-width: 34ch;
-    }
-    .meta {
-      margin-top: 1.5rem;
-      font-size: 0.8125rem;
-      letter-spacing: 0.06em;
-      opacity: 0.6;
-    }
-
-    /* ---------- Sections ---------- */
-    section { padding: clamp(5rem, 10vw, 8rem) 0; }
-    .section-head {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      margin-bottom: 3.5rem;
-    }
-    @media (min-width: 900px) {
-      .section-head {
-        grid-template-columns: 1fr 2fr;
-        gap: 4rem;
-        align-items: end;
-      }
-    }
-
-    /* ---------- Detailing ---------- */
-    .services { background: var(--white); color: var(--navy); }
-    .service-list { list-style: none; border-top: 1px solid var(--rule-on-white); }
-    .service-list li {
-      display: grid;
-      grid-template-columns: 3rem 1fr;
-      gap: 1.5rem;
-      padding: 2.5rem 0;
-      border-bottom: 1px solid var(--rule-on-white);
-      align-items: start;
-    }
-    @media (min-width: 700px) {
-      .service-list li { grid-template-columns: 4rem 1fr; gap: 3rem; }
-    }
-    .service-num {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 0.875rem;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      opacity: 0.45;
-      padding-top: 0.5rem;
-    }
-    .service-body h3 {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 400;
-      font-size: clamp(1.375rem, 2.5vw, 1.625rem);
-      letter-spacing: -0.01em;
-      margin-bottom: 0.5rem;
-    }
-    .service-body p {
-      color: var(--muted-on-white);
-      max-width: 62ch;
-    }
-    .service-note {
-      margin-top: 2.5rem;
-      color: var(--muted-on-white);
-      font-size: 0.9375rem;
-      max-width: 62ch;
-    }
-    .plan-note {
-      margin-top: 2.5rem;
-      color: var(--muted-on-navy);
-      font-size: 0.9375rem;
-      max-width: 62ch;
-    }
-
-    /* ---------- Photo plates (between sections) ---------- */
-    .plate {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem);
-    }
-    .plate--white { background: var(--white); }
-    .plate--navy { background: var(--navy); }
-    .plate img {
-      display: block;
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 80vh;
-    }
-    @media (min-width: 700px) {
-      .plate img { max-width: 880px; max-height: 78vh; }
-    }
-
-    /* ---------- Concierge ---------- */
-    .concierge {
-      background: var(--navy);
-      color: var(--white);
-    }
-    .plan-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      border-top: 1px solid var(--rule-on-navy);
-    }
-    @media (min-width: 760px) {
-      .plan-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    .plan {
-      padding: 2.5rem 0;
-      border-bottom: 1px solid var(--rule-on-navy);
-    }
-    @media (min-width: 760px) {
-      .plan {
-        padding: 2.75rem 2rem 2.75rem 0;
-        border-right: 1px solid var(--rule-on-navy);
-        border-bottom: none;
-      }
-      .plan:last-child { border-right: none; padding-right: 0; }
-      .plan + .plan { padding-left: 2rem; }
-    }
-    .plan-cadence {
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: 0.6;
-      margin-bottom: 1rem;
-    }
-    .plan-name {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.5rem;
-      font-weight: 400;
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.01em;
-    }
-    .plan p {
-      color: var(--muted-on-navy);
-      font-size: 0.9375rem;
-    }
-
-    /* ---------- Contact ---------- */
-    .contact { background: var(--white); }
-    .contact-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-    @media (min-width: 900px) {
-      .contact-layout { grid-template-columns: 1.6fr 1fr; gap: 5rem; }
-    }
-    .contact-photo img {
-      display: block;
-      width: 100%;
-      max-width: 420px;
-      height: auto;
-      margin-left: auto;
-    }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      border-top: 1px solid var(--rule-on-white);
-      padding-top: 2.5rem;
-    }
-    .contact-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: 0.55;
-      margin-bottom: 0.75rem;
-    }
-    .contact-value {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.25;
-    }
-    .contact-value a {
-      color: var(--navy);
-      text-decoration: none;
-      border-bottom: 1px solid var(--rule-on-white);
-      transition: border-color 0.2s ease;
-    }
-    .contact-value a:hover { border-color: var(--navy); }
-
-    /* ---------- Footer ---------- */
-    footer {
-      background: var(--navy);
-      color: var(--white);
-      padding: 2.5rem 0;
-    }
-    .foot-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.8125rem;
-      opacity: 0.55;
-      gap: 1rem;
-    }
-    @media (max-width: 600px) {
-      .foot-inner { flex-direction: column; align-items: flex-start; }
-    }
-
-    /* ---------- Small screens ---------- */
-    @media (max-width: 520px) {
-      .brand { font-size: 0.8125rem; letter-spacing: 0.12em; }
-      .nav-links { gap: 0.875rem; }
-      .nav-links a { font-size: 0.75rem; letter-spacing: 0.04em; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Par Value — Eastside golf rates</title>
+<meta name="description" content="Green fees for every public golf course within reach of Bellevue, in one place. Filter by price, drive time, and when you actually want to play.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231b7a3e'/%3E%3Ccircle cx='12' cy='12' r='2.6' fill='%23fff' opacity='.65'/%3E%3Ccircle cx='21' cy='15' r='2.2' fill='%23fff' opacity='.55'/%3E%3Ccircle cx='15' cy='21' r='2.2' fill='%23fff' opacity='.55'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
 </head>
 <body>
-  <nav class="topbar">
-    <div class="container topbar-inner">
-      <a href="#about" class="brand">MEDINA DETAILING</a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#detailing">Detailing</a></li>
-        <li><a href="#concierge">Concierge</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
 
-  <header id="about" class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <p class="eyebrow">Hand-detailing for boats</p>
-          <h1 class="display">A cleaner boat,<br>by hand.</h1>
-        </div>
-        <div>
-          <p class="eyebrow">About</p>
-          <p class="lede">
-            Born and raised on the Eastside, with two years at a local boat shop
-            and years of freelance interior detailing. I specialize in Malibu,
-            MasterCraft, Nautique, Cobalt, Axis, Chaparral, Supra, Moomba,
-            Centurion, and Tig&eacute; — but I'll work on any boat or jet ski.
-          </p>
-          <p class="lede" style="margin-top: 1rem;">
-            I come to you, wherever your boat lives — marina, lift, or private dock.
-            This season I'm keeping a small client list so every boat gets real attention.
-          </p>
-          <p class="meta">Brody Ruckhaber · Booking the summer.</p>
-        </div>
-        <div class="hero-photo">
-          <img src="gallery/02.jpg" alt="A classic picnic boat at a private lakefront dock" loading="lazy">
-        </div>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <h1>Par Value</h1>
+        <p class="brand-sub">Green fees near Bellevue, without fifteen browser tabs</p>
       </div>
     </div>
-  </header>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+      <span data-theme-icon>◐</span>
+    </button>
+  </div>
+</header>
 
-  <aside class="plate plate--white" aria-hidden="true">
-    <img src="gallery/03.jpg" alt="Mahogany Stancraft runabout at the dock" loading="lazy">
-  </aside>
+<main class="wrap">
 
-  <section id="detailing" class="services">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">— Detailing</p>
-        <h2 class="section-title">What's included.</h2>
+  <section class="now-bar" id="now-bar" aria-live="polite">
+    <div class="now-bar-head">
+      <span class="now-label" id="now-label">Loading…</span>
+    </div>
+    <div class="now-picks" id="now-picks"></div>
+  </section>
+
+  <section class="filters" aria-label="Filters">
+    <div class="filter-row">
+      <div class="field">
+        <label for="f-when">When are you playing?</label>
+        <select id="f-when">
+          <option value="now">Right now</option>
+          <option value="today">Today, any time</option>
+          <option value="weekday">A weekday (Mon–Thu)</option>
+          <option value="weekend">Fri, Sat or Sun</option>
+          <option value="any">Doesn't matter</option>
+        </select>
       </div>
-      <ol class="service-list">
-        <li>
-          <span class="service-num">01</span>
-          <div class="service-body">
-            <h3>Interior Vinyl Wipe-down</h3>
-            <p>Seats, dash, and trim wiped and conditioned to keep the vinyl from cracking under the sun.</p>
-          </div>
-        </li>
-        <li>
-          <span class="service-num">02</span>
-          <div class="service-body">
-            <h3>Window Cleaning</h3>
-            <p>Windshield, side panels, and cabin glass cleaned streak-free for clear visibility on the water.</p>
-          </div>
-        </li>
-        <li>
-          <span class="service-num">03</span>
-          <div class="service-body">
-            <h3>Compartment Vacuum</h3>
-            <p>Glovebox, side compartments, and under-seat storage cleared of sand, leaves, and whatever else summer leaves behind.</p>
-          </div>
-        </li>
-        <li>
-          <span class="service-num">04</span>
-          <div class="service-body">
-            <h3>Exterior Wipe-down</h3>
-            <p>Full topside wipe to clear dust, water spots, and lake debris between bigger jobs.</p>
-          </div>
-        </li>
-      </ol>
-      <p class="service-note">Every job is quoted to your boat — its condition and where it's kept (covered slip, lift, marina). Ask about recurring detailing.</p>
+
+      <div class="field">
+        <label for="f-holes">Holes</label>
+        <select id="f-holes">
+          <option value="any">9 or 18</option>
+          <option value="18">18 holes</option>
+          <option value="9">9 holes</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="f-sort">Sort by</label>
+        <select id="f-sort">
+          <option value="price">Cheapest first</option>
+          <option value="drive">Closest first</option>
+          <option value="confidence">Best-confirmed prices</option>
+          <option value="name">Name</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-row">
+      <div class="field range-field">
+        <label for="f-price">Max green fee <output id="f-price-out" class="range-out">$150</output></label>
+        <input type="range" id="f-price" min="10" max="150" step="5" value="150">
+      </div>
+
+      <div class="field range-field">
+        <label for="f-drive">Max drive <output id="f-drive-out" class="range-out">45 min</output></label>
+        <input type="range" id="f-drive" min="5" max="45" step="5" value="45">
+      </div>
+    </div>
+
+    <div class="filter-row toggles">
+      <label class="check"><input type="checkbox" id="f-walk"> Walking allowed only</label>
+      <label class="check"><input type="checkbox" id="f-confirmed"> Hide unconfirmed prices</label>
+      <button type="button" id="f-reset" class="link-btn">Reset filters</button>
     </div>
   </section>
 
-  <aside class="plate plate--navy" aria-hidden="true">
-    <img src="gallery/05.jpg" alt="A wooden modern powerboat running on the lake" loading="lazy">
-  </aside>
+  <div class="results-head">
+    <h2 id="results-count">Courses</h2>
+    <p class="results-note" id="results-note"></p>
+  </div>
 
-  <section id="concierge" class="concierge">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">— Concierge</p>
-        <h2 class="section-title">Beyond the wash.</h2>
-      </div>
-      <div class="plan-grid">
-        <div class="plan">
-          <p class="plan-cadence">Day-of</p>
-          <h3 class="plan-name">Sunny Day Prep</h3>
-          <p>Uncover your boat, wipe it down, ice the coolers, and pump up the tubes. Step on board and go.</p>
-        </div>
-        <div class="plan">
-          <p class="plan-cadence">On-demand</p>
-          <h3 class="plan-name">Fueling</h3>
-          <p>I'll run your boat or jet ski to the pump and bring it back topped off.</p>
-        </div>
-        <div class="plan">
-          <p class="plan-cadence">Recurring</p>
-          <h3 class="plan-name">Packages</h3>
-          <p>Pick a cadence — weekly, biweekly, or game-day only. Recurring clients get priority morning slots and locked-in pricing.</p>
-        </div>
-      </div>
-      <p class="plan-note">I work around your schedule and your time on the water.</p>
-    </div>
+  <ul class="course-list" id="course-list"></ul>
+
+  <p class="empty" id="empty-state" hidden>No courses match those filters. Try widening the price or drive time.</p>
+
+  <section class="data-health" id="data-health">
+    <h2>How good is this data?</h2>
+    <p class="dh-intro">
+      Every price here carries its confidence level, because a rates site that hides
+      its uncertainty is worse than useless. Here's the honest state of it.
+    </p>
+    <div class="dh-bars" id="dh-bars"></div>
+    <details class="dh-details">
+      <summary>What the labels mean</summary>
+      <dl id="dh-legend"></dl>
+    </details>
+    <p class="dh-todo" id="dh-todo"></p>
   </section>
 
-  <aside class="plate plate--white" aria-hidden="true">
-    <img src="gallery/04.jpg" alt="A sport fishing yacht running offshore" loading="lazy">
-  </aside>
+</main>
 
-  <section id="contact" class="contact">
-    <div class="container">
-      <div class="contact-layout">
-        <div>
-          <div class="section-head">
-            <p class="eyebrow">— Contact</p>
-            <h2 class="section-title">Get a quote.</h2>
-          </div>
-          <div class="contact-grid">
-            <div>
-              <p class="contact-label">Detailer</p>
-              <p class="contact-value">Brody Ruckhaber</p>
-            </div>
-            <div>
-              <p class="contact-label">Phone</p>
-              <p class="contact-value"><a href="tel:+14256281963">(425) 628-1963</a></p>
-            </div>
-            <div>
-              <p class="contact-label">Email</p>
-              <p class="contact-value"><a href="mailto:medinaboatdetail@gmail.com">medinaboatdetail@gmail.com</a></p>
-            </div>
-            <div>
-              <p class="contact-label">Service Area</p>
-              <p class="contact-value">Eastside,<br>Lake Washington</p>
-            </div>
-          </div>
-        </div>
-        <div class="contact-photo">
-          <img src="gallery/01.jpg" alt="A sport fishing yacht at the marina" loading="lazy">
-        </div>
-      </div>
-    </div>
-  </section>
+<footer class="site-footer">
+  <div class="wrap">
+    <p id="footer-disclaimer"></p>
+    <p class="footer-meta">
+      Rates last reviewed <span id="footer-updated">—</span>.
+      Correct a price by editing <code>data/courses.json</code>.
+    </p>
+  </div>
+</footer>
 
-  <footer>
-    <div class="container foot-inner">
-      <p>&copy; 2026 Medina Detailing</p>
-      <p>Booking by appointment.</p>
-    </div>
-  </footer>
+<script src="assets/app.js"></script>
 </body>
 </html>
