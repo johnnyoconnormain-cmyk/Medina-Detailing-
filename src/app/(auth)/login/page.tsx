@@ -4,6 +4,7 @@ import { LoginForm } from "./LoginForm";
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Sign in" };
 
 export default async function LoginPage() {

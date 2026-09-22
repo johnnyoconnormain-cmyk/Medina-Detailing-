@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { SignupForm } from "./SignupForm";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Start free" };
 
 export default async function SignupPage() {
