@@ -1,0 +1,51 @@
+name: Deploy to Vercel
+
+# Optional. The simpler path is installing Vercel's GitHub App, which deploys
+# every push with no workflow at all. This exists for when you'd rather the
+# deploy be visible in GitHub Actions, or need steps to run around it.
+#
+# Requires three repository secrets (Settings -> Secrets -> Actions):
+#   VERCEL_TOKEN       vercel.com/account/tokens
+#   VERCEL_ORG_ID      from .vercel/project.json after `vercel link`
+#   VERCEL_PROJECT_ID  same file
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Skips itself when the secrets aren't set, rather than failing every push.
+    if: ${{ vars.ENABLE_VERCEL_DEPLOY == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Builds with no DATABASE_URL and no database reachable, which is exactly
+      # what a hosting provider's build environment looks like. If this passes,
+      # the build cannot be what breaks a deploy.
+      - name: Build
+        run: npm run build
+        env:
+          VERCEL: "1"
