@@ -64,6 +64,10 @@ export function getPglite(): PGlite {
   return g.__pglite;
 }
 
+export function getSqlClient() {
+  return getSql();
+}
+
 function getSql() {
   if (!g.__sql) {
     // The local PGlite socket server multiplexes every connection onto a SINGLE

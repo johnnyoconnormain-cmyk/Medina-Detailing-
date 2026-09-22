@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { db } from "@/db/client";
+import { ensureSchema } from "@/db/auto-migrate";
 import { eq } from "drizzle-orm";
 import { invoices, customers, businesses, jobs, reviews } from "@/db/schema";
 import { fmtMoney } from "@/lib/money";
@@ -11,6 +12,7 @@ export const metadata: Metadata = { title: "Pay invoice", robots: { index: false
 export const dynamic = "force-dynamic";
 
 export default async function PayPage({ params }: { params: Promise<{ token: string }> }) {
+  await ensureSchema();
   const { token } = await params;
 
   const [row] = await db.select({ invoice: invoices, customer: customers, business: businesses })

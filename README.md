@@ -28,38 +28,27 @@ wipes and reseeds.
 
 ## Deploying
 
-The app is a standard Next.js project and deploys to Vercel with no special
-configuration — but it **requires a hosted Postgres**. The bundled PGlite database
-writes to local disk, and serverless filesystems are read-only and thrown away
-between invocations, so `getPglite()` refuses to start there rather than silently
-losing every write.
+Deploys to Vercel with no configuration. It needs a hosted Postgres, and that is
+the only setup step:
 
-1. **Import the repo** into Vercel. Framework detection and the default build
-   command are correct as-is.
+1. Vercel project → **Storage** → add **Neon** or **Supabase**. Either sets
+   `DATABASE_URL`. Use the **pooled** connection string — serverless runs many
+   instances, each with its own pool.
+2. Redeploy.
 
-2. **Attach a Postgres.** In the Vercel project, Storage → add Neon or Supabase;
-   both set `DATABASE_URL` for you. Any Postgres works. Use the **pooled**
-   connection string — serverless spins up many instances, each with its own pool,
-   and a direct connection will exhaust the server's connection limit.
+**No migration command is needed.** The app creates its schema on first contact
+with an empty database, serialised by a Postgres advisory lock so concurrent
+cold starts cannot race, and recorded in a `__migrations` ledger so it happens
+once. DDL is transactional in Postgres, so a failure leaves the database
+untouched rather than half-built.
 
-3. **Create the schema**, once, from your machine:
+Set `APP_URL` to the deployed origin so customer-facing links in messages are
+absolute.
 
-   ```bash
-   DATABASE_URL="postgres://…" npm run db:deploy        # migrations
-   DATABASE_URL="postgres://…" npm run db:deploy:seed   # optional demo data
-   ```
-
-   Migrations are deliberately not run during the build: builds re-run and can run
-   in parallel, and racing schema changes against each other is how you corrupt a
-   database.
-
-4. **Set `APP_URL`** to the deployed origin so customer-facing links in messages
-   are absolute.
-
-Photo uploads need object storage in production for the same read-only-filesystem
-reason. Without it, the upload button reports that storage isn't configured and
-the rest of the job flow continues unaffected — add Vercel Blob, S3 or Supabase
-Storage behind `StorageProvider` in `lib/adapters/storage.ts`.
+Photo uploads need object storage in production, since serverless filesystems
+are read-only. Without it the upload button says so and the rest of the job flow
+is unaffected — add Vercel Blob, S3 or Supabase Storage behind `StorageProvider`
+in `lib/adapters/storage.ts`.
 
 
 ## The database decision

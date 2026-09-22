@@ -1,46 +1,33 @@
-# Setting up the database (no terminal needed)
+# Setting up the database
 
-The app is deployed but needs somewhere to store data. Postgres is required —
-Convex, Firebase and similar document databases will not work, because the app
-uses SQL tables, joins and aggregate queries.
+**You should not need to run any SQL.** The app creates its own tables the first
+time it talks to a database, so the whole setup is:
 
-## Steps
+1. In your Vercel project → **Storage** → **Create Database** → **Neon** → Create.
+   That sets `DATABASE_URL` automatically.
+2. **Deployments** → top one → **⋯** → **Redeploy**.
+3. Open the site → **Start free** → make your account.
 
-1. **Add Postgres in Vercel.**
-   Your project → **Storage** → **Neon** (or Supabase). Either one sets
-   `DATABASE_URL` for you automatically. Pick the **pooled** connection string
-   if you're offered a choice.
+That's it. On the first request the app takes a Postgres advisory lock, creates
+all 20 tables, records the migration, and releases. Subsequent boots cost one
+cheap lookup.
 
-2. **Create the tables.**
-   Open your database's SQL editor in the browser:
-   - Neon: your project → **SQL Editor**
-   - Supabase: your project → **SQL Editor** → **New query**
+Postgres is genuinely required. Convex, Firebase and other document databases
+will not work — the app uses SQL tables, joins and aggregate queries throughout.
 
-   Copy the whole of [`01-schema.sql`](01-schema.sql), paste it in, and run it.
-   That's the entire setup — 20 tables.
+## If something goes wrong
 
-3. **Redeploy.** Vercel redeploys automatically when the environment variable
-   changes. If it doesn't, hit Redeploy on the latest deployment.
+`01-schema.sql` in this folder is the same schema as a plain file, in case you
+ever want to create it by hand in a SQL editor. You shouldn't need it.
 
-4. **Open the site and click "Start free."** That creates your company with
-   starter services, a crew and the default automations already switched on.
+## Demo data (optional)
 
-## Optional: load the demo company
-
-If you'd rather look around a business that already has history in it —
-customers, leads, quotes, jobs, invoices, payments — run
-[`02-demo-data.sql`](02-demo-data.sql) in the same SQL editor after step 2,
-then sign in with:
-
-    mike@cascadegreen.com  /  demo1234
-
-Skip this if you're setting up for real use; it's sample data.
-
-## If you do have a terminal
-
-The same thing, from a local checkout:
+A signup gives you an empty company, which is the right starting point for real
+use. If you'd rather explore one with history in it, run this from a local
+checkout:
 
 ```bash
-DATABASE_URL="postgres://…" npm run db:deploy        # creates the tables
-DATABASE_URL="postgres://…" npm run db:deploy:seed   # optional demo data
+DATABASE_URL="postgres://…" npm run db:deploy:seed
 ```
+
+Then sign in with `mike@cascadegreen.com` / `demo1234`.

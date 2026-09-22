@@ -4,6 +4,7 @@ import { eq, and, gt } from "drizzle-orm";
 import { db } from "@/db/client";
 import { sessions, users, businesses } from "@/db/schema";
 import { SESSION_COOKIE, SESSION_TTL_DAYS, newToken } from "./auth";
+import { ensureSchema } from "@/db/auto-migrate";
 import { cache } from "react";
 
 export type SessionUser = {
@@ -36,6 +37,10 @@ export async function destroySession() {
  * dozen identical session lookups.
  */
 export const getSession = cache(async (): Promise<{ user: SessionUser; business: SessionBusiness } | null> => {
+  // First call on a cold instance creates the schema if the database is empty,
+  // so a fresh deployment needs nothing but a DATABASE_URL. No-op afterwards.
+  await ensureSchema();
+
   const jar = await cookies();
   const token = jar.get(SESSION_COOKIE)?.value;
   if (!token) return null;

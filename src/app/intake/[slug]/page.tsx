@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { db } from "@/db/client";
+import { ensureSchema } from "@/db/auto-migrate";
 import { and, eq, asc } from "drizzle-orm";
 import { businesses, services } from "@/db/schema";
 import { IntakeForm } from "./IntakeForm";
@@ -14,6 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function IntakePage({ params }: { params: Promise<{ slug: string }> }) {
+  await ensureSchema();
   const { slug } = await params;
   const [biz] = await db.select().from(businesses).where(eq(businesses.slug, slug)).limit(1);
   if (!biz) notFound();
