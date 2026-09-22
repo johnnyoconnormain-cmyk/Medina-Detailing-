@@ -12,7 +12,9 @@
     "db:seed": "tsx src/db/seed.ts",
     "db:reset": "rm -rf .pgdata && npm run db:push && npm run db:seed",
     "dev:next": "next dev",
-    "db:serve": "tsx src/db/server.ts"
+    "db:serve": "tsx src/db/server.ts",
+    "db:deploy": "tsx src/db/push.ts",
+    "db:deploy:seed": "tsx src/db/seed.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.8",
@@ -36,5 +38,8 @@
     "tailwindcss": "^3.4.19",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

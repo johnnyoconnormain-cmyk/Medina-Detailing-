@@ -39,7 +39,27 @@ export function usingRemote(): boolean {
   return Boolean(process.env.DATABASE_URL);
 }
 
+/** Serverless hosts (Vercel, Lambda) have an ephemeral, read-only filesystem. */
+export function isServerless(): boolean {
+  return Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY);
+}
+
 export function getPglite(): PGlite {
+  /*
+   * Embedded PGlite writes to a local directory. On a serverless host that
+   * directory is read-only and thrown away between invocations, so the app
+   * would either crash or silently lose every write. Failing loudly here is
+   * the only honest option — a deployed invoicing product that drops data is
+   * far worse than one that refuses to start.
+   */
+  if (isServerless()) {
+    throw new Error(
+      "DATABASE_URL is required in a serverless deployment.\n" +
+      "The bundled PGlite database writes to disk, which is read-only and ephemeral here, " +
+      "so nothing would persist. Point DATABASE_URL at hosted Postgres (Supabase, Neon, RDS) " +
+      "in your project's environment variables. The schema and queries need no changes.",
+    );
+  }
   if (!g.__pglite) g.__pglite = new PGlite(DATA_DIR);
   return g.__pglite;
 }
@@ -52,10 +72,23 @@ function getSql() {
     // One connection per process serialises them. A real Postgres has no such
     // limit, so the pool opens up as soon as DATABASE_URL points at one.
     const local = /127\.0\.0\.1|localhost/.test(process.env.DATABASE_URL!);
+
+    /*
+     * Pool sizing by environment:
+     *  - local PGlite socket: 1, because it multiplexes onto a single engine.
+     *  - serverless: small, because every warm instance holds its own pool and
+     *    Postgres connection limits are per-cluster, not per-instance. Use a
+     *    pooled endpoint (Supabase pgbouncer / Neon pooler) in production.
+     *  - long-lived server: a normal pool.
+     */
+    const max = Number(process.env.DB_POOL_MAX ?? (local ? 1 : isServerless() ? 1 : 10));
+
     g.__sql = postgres(process.env.DATABASE_URL!, {
-      max: Number(process.env.DB_POOL_MAX ?? (local ? 1 : 10)),
+      max,
       idle_timeout: 20,
-      prepare: !local,
+      connect_timeout: 15,
+      // Transaction-mode poolers do not support named prepared statements.
+      prepare: !local && !isServerless(),
       onnotice: () => {},
     });
   }

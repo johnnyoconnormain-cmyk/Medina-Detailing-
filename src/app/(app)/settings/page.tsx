@@ -11,6 +11,7 @@ import { fmtMoney } from "@/lib/money";
 import { getPaymentProvider } from "@/lib/adapters/payments";
 import { getMessaging } from "@/lib/adapters/messaging";
 import { getIntelligence } from "@/lib/adapters/ai";
+import { getStorage } from "@/lib/adapters/storage";
 import { isMapAvailable } from "@/lib/adapters/maps";
 import { isWeatherAvailable } from "@/lib/adapters/weather";
 import { logoutAction } from "@/actions/auth";
@@ -34,6 +35,8 @@ export default async function SettingsPage() {
       hint: "Messages are recorded in each customer's history but not transmitted. Connect Twilio or Resend to send." },
     { name: "Lead analysis", detail: getIntelligence().name, live: true,
       hint: "Deterministic keyword analysis — runs offline, costs nothing, gives the same answer twice." },
+    { name: "Photo storage", detail: getStorage().name, live: getStorage().available,
+      hint: "Local disk in development. A serverless deployment needs object storage (Vercel Blob, S3, Supabase Storage)." },
     { name: "Maps", detail: isMapAvailable() ? "configured" : "not connected", live: isMapAvailable(),
       hint: "Set MAPBOX_TOKEN or GOOGLE_MAPS_KEY for routing and crew locations." },
     { name: "Weather", detail: isWeatherAvailable() ? "configured" : "not connected", live: isWeatherAvailable(),
