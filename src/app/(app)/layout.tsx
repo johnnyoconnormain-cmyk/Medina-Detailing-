@@ -4,6 +4,8 @@ import { and, eq, inArray, sql } from "drizzle-orm";
 import { leads, quotes, invoices } from "@/db/schema";
 import { Sidebar } from "@/components/shell/Nav";
 import { CommandPalette } from "@/components/shell/CommandPalette";
+import { DemoBanner } from "@/components/shell/DemoBanner";
+import { isDemoMode } from "@/db/client";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const ctx = await requireCtx();
@@ -25,7 +27,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         user={{ name: ctx.user.name, role: ctx.user.role, avatarColor: ctx.user.avatarColor }}
         business={{ name: ctx.business.name }}
       />
-      <div className="flex min-w-0 flex-1 flex-col">{children}</div>
+      <div className="flex min-w-0 flex-1 flex-col">
+        {isDemoMode() && <DemoBanner />}
+        {children}
+      </div>
       <CommandPalette />
     </div>
   );

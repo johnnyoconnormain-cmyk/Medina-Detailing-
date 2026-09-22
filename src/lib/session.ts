@@ -4,7 +4,8 @@ import { eq, and, gt } from "drizzle-orm";
 import { db } from "@/db/client";
 import { sessions, users, businesses } from "@/db/schema";
 import { SESSION_COOKIE, SESSION_TTL_DAYS, newToken } from "./auth";
-import { ensureSchema } from "@/db/auto-migrate";
+import { ensureSchema, getDemoOwnerId } from "@/db/auto-migrate";
+import { isDemoMode } from "@/db/client";
 import { cache } from "react";
 
 export type SessionUser = {
@@ -40,6 +41,31 @@ export const getSession = cache(async (): Promise<{ user: SessionUser; business:
   // First call on a cold instance creates the schema if the database is empty,
   // so a fresh deployment needs nothing but a DATABASE_URL. No-op afterwards.
   await ensureSchema();
+
+  // With no database attached, the app runs on an in-memory demo and signs the
+  // owner in automatically — there is no account to create and nothing would
+  // persist anyway. Never reachable once DATABASE_URL is set.
+  if (isDemoMode()) {
+    const ownerId = getDemoOwnerId();
+    if (ownerId) {
+      const rows = await db
+        .select({ user: users, business: businesses })
+        .from(users)
+        .innerJoin(businesses, eq(users.businessId, businesses.id))
+        .where(eq(users.id, ownerId))
+        .limit(1);
+      const row = rows[0];
+      if (row) {
+        return {
+          user: {
+            id: row.user.id, businessId: row.user.businessId, email: row.user.email,
+            name: row.user.name, role: row.user.role, avatarColor: row.user.avatarColor,
+          },
+          business: row.business,
+        };
+      }
+    }
+  }
 
   const jar = await cookies();
   const token = jar.get(SESSION_COOKIE)?.value;

@@ -44,23 +44,25 @@ export function isServerless(): boolean {
   return Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY);
 }
 
+/**
+ * Demo mode: deployed with no database attached.
+ *
+ * Rather than refusing to boot, the app runs against an in-memory PGlite that is
+ * migrated and seeded on startup. Everything works and nothing persists — each
+ * cold start begins again from the same sample company. It exists so the app can
+ * be looked at with zero setup; attaching DATABASE_URL turns it off.
+ */
+export function isDemoMode(): boolean {
+  return isServerless() && !process.env.DATABASE_URL;
+}
+
 export function getPglite(): PGlite {
-  /*
-   * Embedded PGlite writes to a local directory. On a serverless host that
-   * directory is read-only and thrown away between invocations, so the app
-   * would either crash or silently lose every write. Failing loudly here is
-   * the only honest option — a deployed invoicing product that drops data is
-   * far worse than one that refuses to start.
-   */
-  if (isServerless()) {
-    throw new Error(
-      "DATABASE_URL is required in a serverless deployment.\n" +
-      "The bundled PGlite database writes to disk, which is read-only and ephemeral here, " +
-      "so nothing would persist. Point DATABASE_URL at hosted Postgres (Supabase, Neon, RDS) " +
-      "in your project's environment variables. The schema and queries need no changes.",
-    );
+  if (!g.__pglite) {
+    // In memory on a serverless host: its filesystem is read-only and discarded
+    // between invocations, so a data directory would fail or silently lose
+    // writes. On a real machine, persist to disk as usual.
+    g.__pglite = isServerless() ? new PGlite() : new PGlite(DATA_DIR);
   }
-  if (!g.__pglite) g.__pglite = new PGlite(DATA_DIR);
   return g.__pglite;
 }
 

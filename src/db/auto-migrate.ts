@@ -1,5 +1,5 @@
 import "server-only";
-import { getSqlClient, usingRemote } from "./client";
+import { getSqlClient, usingRemote, isDemoMode, execRaw, queryRaw } from "./client";
 import { MIGRATIONS } from "./migrations.generated";
 
 /**
@@ -32,7 +32,26 @@ export function ensureSchema(): Promise<void> {
   return done;
 }
 
+/** Set once the in-memory demo database has been built, so pages can auto-sign-in. */
+let demoOwnerId: string | null = null;
+export function getDemoOwnerId(): string | null {
+  return demoOwnerId;
+}
+
 async function run(): Promise<void> {
+  // Deployed with no database: build one in memory and fill it, so the app is
+  // usable immediately instead of showing a setup screen.
+  if (isDemoMode()) {
+    for (const migration of MIGRATIONS) {
+      for (const statement of migration.statements) await execRaw(statement);
+    }
+    const { seedDemo } = await import("./demo");
+    demoOwnerId = await seedDemo();
+    const rows = await queryRaw<{ n: number }>("select count(*)::int as n from jobs");
+    console.log(`[demo] in-memory database ready — ${rows[0]?.n ?? 0} jobs`);
+    return;
+  }
+
   // Local development migrates through `npm run db:push`.
   if (!usingRemote()) return;
 
