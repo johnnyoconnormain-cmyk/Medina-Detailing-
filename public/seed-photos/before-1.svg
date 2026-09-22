@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6f6859"/><stop offset="1" stop-color="#3a3630"/>
+    </linearGradient>
+    <pattern id="p" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(32)">
+      <rect width="28" height="28" fill="none"/>
+      <path d="M0 14h28" stroke="rgba(255,255,255,.05)" stroke-width="9"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)"/>
+  <rect width="800" height="600" fill="url(#p)"/>
+  <text x="40" y="72" font-family="ui-sans-serif,system-ui,sans-serif" font-size="26"
+        font-weight="700" letter-spacing="3" fill="rgba(255,255,255,.92)">BEFORE</text>
+  <text x="40" y="104" font-family="ui-sans-serif,system-ui,sans-serif" font-size="15"
+        fill="rgba(255,255,255,.55)">Sample documentation image</text>
+</svg>

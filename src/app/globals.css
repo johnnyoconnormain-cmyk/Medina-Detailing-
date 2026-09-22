@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 250 249 247;
+    --surface: 255 255 255;
+    --surface-2: 248 247 245;
+    --border: 226 223 216;
+    --border-strong: 203 198 188;
+    --text: 23 21 18;
+    --text-muted: 111 104 89;
+    --text-faint: 138 131 118;
+    --accent: 42 103 70;
+    --accent-fg: 255 255 255;
+  }
+
+  [data-theme="dark"] {
+    --bg: 18 17 15;
+    --surface: 26 24 21;
+    --surface-2: 33 30 26;
+    --border: 48 44 38;
+    --border-strong: 68 62 53;
+    --text: 240 238 234;
+    --text-muted: 169 162 150;
+    --text-faint: 138 131 118;
+    --accent: 90 156 119;
+    --accent-fg: 13 31 23;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: rgb(var(--bg));
+    color: rgb(var(--text));
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Every figure in this product is a number someone makes decisions on.
+     Tabular numerals keep columns aligned and stop digits jittering on update. */
+  .tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+  ::selection { background: rgb(var(--accent) / 0.2); }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  input, textarea, select, button { font: inherit; }
+}
+
+@layer components {
+  .surface { background: rgb(var(--surface)); border: 1px solid rgb(var(--border)); }
+  .surface-2 { background: rgb(var(--surface-2)); }
+  .hairline { border-color: rgb(var(--border)); }
+  .text-muted { color: rgb(var(--text-muted)); }
+  .text-faint { color: rgb(var(--text-faint)); }
+
+  .label-xs {
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgb(var(--text-faint));
+  }
+
+  .card {
+    background: rgb(var(--surface));
+    border: 1px solid rgb(var(--border));
+    border-radius: 8px;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    border-radius: 6px; font-weight: 550; font-size: 0.875rem;
+    padding: 0.5rem 0.875rem; transition: all 120ms ease;
+    border: 1px solid transparent; cursor: pointer; white-space: nowrap;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-primary { background: rgb(var(--accent)); color: rgb(var(--accent-fg)); }
+  .btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
+
+  .btn-secondary {
+    background: rgb(var(--surface)); color: rgb(var(--text));
+    border-color: rgb(var(--border-strong));
+  }
+  .btn-secondary:hover:not(:disabled) { background: rgb(var(--surface-2)); }
+
+  .btn-ghost { background: transparent; color: rgb(var(--text-muted)); }
+  .btn-ghost:hover:not(:disabled) { background: rgb(var(--surface-2)); color: rgb(var(--text)); }
+
+  .input {
+    width: 100%; border-radius: 6px; padding: 0.5rem 0.75rem;
+    background: rgb(var(--surface)); border: 1px solid rgb(var(--border-strong));
+    color: rgb(var(--text)); font-size: 0.875rem;
+  }
+  .input::placeholder { color: rgb(var(--text-faint)); }
+  .input:focus { outline: none; border-color: rgb(var(--accent)); box-shadow: 0 0 0 3px rgb(var(--accent) / 0.12); }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.01em;
+    padding: 0.15rem 0.45rem; border-radius: 4px;
+    border: 1px solid currentColor;
+  }
+
+  /* Row that behaves like a link without nesting interactive elements. */
+  .row-link { transition: background 100ms ease; }
+  .row-link:hover { background: rgb(var(--surface-2)); }
+
+  .skeleton {
+    position: relative; overflow: hidden;
+    background: rgb(var(--surface-2)); border-radius: 4px;
+  }
+  .skeleton::after {
+    content: ""; position: absolute; inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(var(--border) / 0.5), transparent);
+    animation: shimmer 1.4s infinite;
+  }
+  @keyframes shimmer { 100% { transform: translateX(100%); } }
+
+  .scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+  .scroll-thin::-webkit-scrollbar-track { background: transparent; }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background: rgb(var(--border-strong)); border-radius: 4px;
+    border: 2px solid rgb(var(--bg));
+  }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+}
